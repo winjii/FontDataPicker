@@ -1,21 +1,23 @@
 フォント内部のデータを読み、縦書き用グリフ置換を行う処理を実装したもの。
 GsubReaderクラス参照。
 
-# FreeTypeのビルド方法(VS2017の場合)
+# FreeTypeをどういじったか(VS2017使用)
+GsubReaderクラスを正しく動作させるためのFreeTypeのビルド方法。
+VS2017を使用したがほかの環境でも同じように出来るはず？
+
 - プロジェクトファイル"builds/windows/vc2010/freetype.vcxproj"をVSで開く
 
 
 ## FT_OpenType_Validate()を使えるように、該当モジュールを追加する
 
-FreeTypeにはオプションで使えるモジュールなるものが用意されているらしい。FT_OpenType_Validate()はフォントのGSUBテーブルを参照するために使う。
+FreeTypeにはオプションで使えるモジュールなるものが用意されている。
+FT_OpenType_Validate()はフォントのGSUBテーブルを参照するために使う。
 
 
 - ソリューションエクスプローラーから、Source Files/FT_MODULES/ にファイル"src/otvalid/otvalid.c"を追加
 
 
-- include\freetype\config\ftmodule.h を開き
-    FT_USE_MODULE( FT_Module_Class, otv_module_class )
-- を追加
+- include\freetype\config\ftmodule.h を開き ```FT_USE_MODULE( FT_Module_Class, otv_module_class )``` を追加
 
 
 ## FreeTypeのバグを修正
@@ -24,12 +26,18 @@ FreeTypeにはオプションで使えるモジュールなるものが用意さ
 これを修正する。
 
 - src\otvalid\otvgsub.c を開き、74行目あたりをコメントアウト
+```
     //if ( idx < 0 )
     //  FT_INVALID_DATA;
     
     //idx = (FT_Long)otv_Coverage_get_last( Coverage ) + DeltaGlyphID;
     //if ( (FT_UInt)idx >= otvalid->glyph_count )
     //  FT_INVALID_DATA;
+```
+
+## ビルド
+後はビルドをした
+
 # 参考情報
 - Microsoft Typography
   - https://www.microsoft.com/en-us/Typography/OpenTypeSpecification.aspx
