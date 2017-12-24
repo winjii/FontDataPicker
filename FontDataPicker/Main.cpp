@@ -3,6 +3,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OPENTYPE_VALIDATE_H
+#include "GsubReader.h"
 
 int main() {
 	FT_Library lib;
@@ -17,7 +18,7 @@ int main() {
 	error = FT_OpenType_Validate(face, FT_VALIDATE_GSUB, &baseTable, &gdefTable, &gposTable, &gsubTable, &jstfTable);
 	std::cout << error << std::endl;
 
-	using uint16 = short;
+	using uint16 = unsigned short;
 	auto toUint16 = [](FT_Bytes p) {
 		return ((uint16)p[0] << 8) + (uint16)p[1];
 	};
@@ -31,6 +32,7 @@ int main() {
 	uint16 lookupCount = toUint16(lookupList + 0);
 	FT_Bytes lookups = lookupList + 2;
 
+	std::cout << std::endl << "Feature List" << std::endl;
 	for (int i = 0; i < featureCount; i++) {
 		FT_Bytes featureRecord = featureRecords + 6*i;
 		const std::string tag = {
@@ -40,5 +42,7 @@ int main() {
 			(char)featureRecord[3] };
 		std::cout << tag << std::endl;
 	}
+
+	
 	return 0;
 }
