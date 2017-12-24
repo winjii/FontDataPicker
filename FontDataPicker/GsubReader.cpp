@@ -1,39 +1,33 @@
-/*#include "GsubReader.h"
-#include "Util.h"
+#include "GsubReader.h"
 #include <string>
 #include <vector>
-
-namespace NoNameEditor {
-namespace Font {
-
-
 
 GsubReader::GsubReader(FT_Face face) : _face(face) {
 	auto toUint16 = [](FT_Bytes p) {
 		return ((uint16)p[0] << 8) + (uint16)p[1];
 	};
 
-	//以下、_vertSubstitutionの構築
 	FT_Bytes baseTable, gdefTable, gposTable, gsubTable, jstfTable;
 	int error = FT_OpenType_Validate(face, FT_VALIDATE_GSUB, &baseTable, &gdefTable, &gposTable, &gsubTable, &jstfTable);
 	uint16 featureOffset = toUint16(gsubTable + 6);
 	FT_Bytes featureList = gsubTable + featureOffset;
 	uint16 featureCount = toUint16(featureList + 0);
 	FT_Bytes featureRecords = featureList + 2;
-	
+
 	uint16 lookupOffset = toUint16(gsubTable + 8);
 	FT_Bytes lookupList = gsubTable + lookupOffset;
 	uint16 lookupCount = toUint16(lookupList + 0);
 	FT_Bytes lookups = lookupList + 2;
 
+	//Coverageテーブルが指定しているグリフインデックスを読み取る
 	auto coverageToIndices = [toUint16](FT_Bytes coverage) {
-		std::vector<uint16> res;
+		std::vector<GlyphIndex> ret;
 		uint16 format = toUint16(coverage + 0);
 		if (format == 1) {
 			uint16 count = toUint16(coverage + 2);
 			FT_Bytes indices = coverage + 4;
 			for (int i = 0; i < count; i++) {
-				res.push_back(toUint16(indices + 2*i));
+				ret.push_back(toUint16(indices + 2*i));
 			}
 		}
 		else if (format == 2) {
@@ -41,16 +35,17 @@ GsubReader::GsubReader(FT_Face face) : _face(face) {
 			FT_Bytes rangeRecords = coverage + 4;
 			for (int i = 0; i < count; i++) {
 				FT_Bytes rangeRecord = rangeRecords + 6*i;
-				uint16 startIndex = toUint16(rangeRecord + 0);
-				uint16 endIndex = toUint16(rangeRecord + 2);
-				for (uint16 j = startIndex; j <= endIndex; j++) {
-					res.push_back(j);
+				GlyphIndex startIndex = toUint16(rangeRecord + 0);
+				GlyphIndex endIndex = toUint16(rangeRecord + 2);
+				for (GlyphIndex j = startIndex; j <= endIndex; j++) {
+					ret.push_back(j);
 				}
 			}
 		}
-		return res;
+		return ret;
 	};
 
+	//Lookupテーブルを読んで、_vertSubstitutionを構築
 	auto readLookup = [&](FT_Bytes lookup) {
 		uint16 lookupType = toUint16(lookup + 0);
 		if (lookupType != 1) return; //単独置換(type == 1)のみ処理
@@ -83,6 +78,8 @@ GsubReader::GsubReader(FT_Face face) : _face(face) {
 		}
 	};
 
+	//vertフィーチャー(縦書き用グリフ置換の機能)を見つけて、内部の置換情報を読みに行く
+	//厳密には、使いたい文字体系(Script)と言語体系(Language)を選択した上で対応するfeatureだけを読むべき。それをすると呼び出し側がScriptとLanguageを選択する必要が出てきて複雑になるので、とりあえずvertとついたfeatureを全部読んでいる。縦書きへのグリフ置換しか利用しないなら大きな問題はないと思われる
 	for (int i = 0; i < featureCount; i++) {
 		FT_Bytes featureRecord = featureRecords + 6*i;
 		const std::string tag = {
@@ -108,6 +105,3 @@ GlyphIndex GsubReader::vertSubstitute(GlyphIndex gid) {
 		return gid;
 	return _vertSubstitution[gid];
 }
-
-}
-}*/

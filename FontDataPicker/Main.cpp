@@ -43,6 +43,11 @@ int main() {
 		std::cout << tag << std::endl;
 	}
 
-	
+	FT_Select_Charmap(face, FT_Encoding::FT_ENCODING_UNICODE);
+	GlyphIndex input = (GlyphIndex)FT_Get_Char_Index(face, L'B');
+
+	GsubReader gsubReader(face);
+	GlyphIndex output = gsubReader.vertSubstitute(input);
+	std::cout << std::endl << input << " -> " << output << std::endl;
 	return 0;
 }
