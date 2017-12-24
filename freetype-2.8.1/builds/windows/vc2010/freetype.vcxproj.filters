@@ -131,6 +131,9 @@
     <ClCompile Include="..\..\..\src\winfonts\winfnt.c">
       <Filter>Source Files\FT_MODULES</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\otvalid\otvalid.c">
+      <Filter>Source Files\FT_MODULES</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\ft2build.h">
