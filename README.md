@@ -4,7 +4,7 @@ OpenSiv3D開発の参考資料として書いたもの→https://github.com/winj
 本体はFontDataPickerプロジェクト。
 
 # 動作条件
-- 以下で述べる手順を踏んだFreeTypeプロジェクト(2.8.1で動作確認)が、同じディレクトリにあること
+- 以下で述べる手順を踏んだFreeTypeプロジェクト(2.8.1)が、同じディレクトリにあること
 
 # FreeTypeをどういじったか(VS2017使用)
 GsubReaderクラスを正しく動作させるためのFreeTypeのビルド方法。
