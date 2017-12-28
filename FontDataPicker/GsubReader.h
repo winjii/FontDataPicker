@@ -5,6 +5,9 @@
 #include FT_OPENTYPE_VALIDATE_H
 
 
+namespace FontDataPicker {
+
+
 using int16 = short;
 using uint16 = unsigned short;
 using GlyphIndex = uint16;
@@ -24,3 +27,6 @@ public:
 	GlyphIndex vertSubstitute(GlyphIndex gid);
 
 };
+
+
+}

@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 
+namespace FontDataPicker {
+
+
 GsubReader::GsubReader(FT_Face face) : _face(face) {
 	auto toUint16 = [](FT_Bytes p) {
 		return ((uint16)p[0] << 8) + (uint16)p[1];
@@ -104,4 +107,7 @@ GlyphIndex GsubReader::vertSubstitute(GlyphIndex gid) {
 	if (_vertSubstitution.find(gid) == _vertSubstitution.end())
 		return gid;
 	return _vertSubstitution[gid];
+}
+
+
 }
