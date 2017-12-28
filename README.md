@@ -1,5 +1,8 @@
-フォント内部のデータを読み、縦書き用グリフ置換を行う処理を実装したもの。
-GsubReaderクラス参照。
+フォント内部のデータを読むためのライブラリ的な何か。
+本体はFontDataPickerプロジェクト。
+
+# 動作条件
+- 以下で述べる手順を踏んだFreeTypeプロジェクト(2.8.1で動作確認)が、同じディレクトリにあること
 
 # FreeTypeをどういじったか(VS2017使用)
 GsubReaderクラスを正しく動作させるためのFreeTypeのビルド方法。
@@ -41,5 +44,3 @@ FT_OpenType_Validate()はフォントのGSUBテーブルを参照するために
 # 参考情報
 - Microsoft Typography
   - https://www.microsoft.com/en-us/Typography/OpenTypeSpecification.aspx
-  - フォント内部の他の情報が欲しい時も、概要を調べた後、これを見ながら頑張ってパースしていく感じになると思います
-
