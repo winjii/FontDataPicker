@@ -1,3 +1,5 @@
+OpenSiv3D開発の参考資料として書いたもの→https://github.com/winjii/FontDataPicker_Old
+
 フォント内部のデータを読むためのライブラリ的な何か。
 本体はFontDataPickerプロジェクト。
 
@@ -37,9 +39,6 @@ FT_OpenType_Validate()はフォントのGSUBテーブルを参照するために
     //if ( (FT_UInt)idx >= otvalid->glyph_count )
     //  FT_INVALID_DATA;
 ```
-
-## ビルド
-後はビルドをした
 
 # 参考情報
 - Microsoft Typography
