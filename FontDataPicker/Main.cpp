@@ -6,6 +6,7 @@
 #include "GsubReader.h"
 
 int main() {
+	using namespace FontDataPicker;
 	FT_Library lib;
 	int error = FT_Init_FreeType(&lib);
 	std::cout << error << std::endl;
